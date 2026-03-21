@@ -1,5 +1,9 @@
+/* eslint-disable import/extensions */
 import dotenv from "dotenv";
 import express from "express";
+import { obj } from "./data";
+import connectMongoDB from "./utils/connectDB.js";
+import cleanRecipe from "./utils/cleanRecipe";
 
 const app = express();
 dotenv.config();
@@ -12,7 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   //   res.send("API is running");
-  res.status(200).json({ message: "Server is running" });
+  res.status(200).json({
+    message: "Server is running",
+    orig: obj,
+    cleaned: cleanRecipe(obj.results[0]),
+  });
 });
 
 //TODO: Move into controller file after testing
@@ -38,8 +46,37 @@ app.get("/api/recipe", async (req, res) => {
   }
 });
 
+console.log(obj.results[0].id, "recipe");
+/* Attributes to save:
+id
+image
+title
+readiInMinutes
+servings
+sourceURL
+(can group these into tags section)
+vegetarian
+vegan
+glutenFree
+dairyFree
+veryHealthy
+cheap
+(end of group)
+creditsText
+license
+sourceName
+pricePerServing (convert from INR to USD)
+extendedIngredients (array, need to clean objects inside it)
+summary
+analyzedInstructions
+language
+spoonacularSourceUrl
+
+*/
+
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  connectMongoDB();
 });

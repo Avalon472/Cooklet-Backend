@@ -1,18 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
-    "moduleDetection": "force",
-    "rootDir": "./src",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "./dist",
+    "rootDir": "./src",
     "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": ["node"],
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./node_modules/@types"]
-  },
-  "include": ["src"]
+    "allowJs": true,
+    "checkJs": false
+  }
 }
