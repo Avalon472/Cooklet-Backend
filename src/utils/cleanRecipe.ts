@@ -8,12 +8,15 @@ const cleanRecipe = (recipe: originalRecipeType) => {
     aisle: item.aisle,
     name: item.name,
     amount: item.amount,
-    unit: item.unit,
+    unit: item.unit ?? "unit(s)",
     measures: {
-      us: { amount: item.measures.us.amount, unit: item.measures.us.unitShort },
+      us: {
+        amount: item.measures.us.amount,
+        unit: item.measures.us.unitShort ?? "unit(s)",
+      },
       metric: {
         amount: item.measures.metric.amount,
-        unit: item.measures.metric.unitShort,
+        unit: item.measures.metric.unitShort ?? "unit(s)",
       },
     },
   }));
@@ -43,7 +46,7 @@ const cleanRecipe = (recipe: originalRecipeType) => {
     creditsText: recipe.creditsText,
     license: recipe.license,
     sourceName: recipe.sourceName,
-    pricePerServing: recipe.pricePerServing,
+    pricePerServing: recipe.pricePerServing * 0.011, //Price is in INR, needs to be converted to USD
     extendedIngredients: ingredients,
     summary: recipe.summary,
     analyzedInstructions: instructions,

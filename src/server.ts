@@ -2,8 +2,9 @@
 import dotenv from "dotenv";
 import express from "express";
 import { obj } from "./data";
-import connectMongoDB from "./utils/connectDB.js";
+import connectMongoDB from "./utils/connectDB";
 import cleanRecipe from "./utils/cleanRecipe";
+import recipeRoutes from "./routes/recipeRoutes";
 
 const app = express();
 dotenv.config();
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 //TODO: Move into controller file after testing
-app.get("/api/recipe", async (req, res) => {
+app.get("/search", async (req, res) => {
   try {
     const { query, amount } = req.body;
     console.log(query);
@@ -46,33 +47,7 @@ app.get("/api/recipe", async (req, res) => {
   }
 });
 
-console.log(obj.results[0].id, "recipe");
-/* Attributes to save:
-id
-image
-title
-readiInMinutes
-servings
-sourceURL
-(can group these into tags section)
-vegetarian
-vegan
-glutenFree
-dairyFree
-veryHealthy
-cheap
-(end of group)
-creditsText
-license
-sourceName
-pricePerServing (convert from INR to USD)
-extendedIngredients (array, need to clean objects inside it)
-summary
-analyzedInstructions
-language
-spoonacularSourceUrl
-
-*/
+app.use("/api/recipe", recipeRoutes);
 
 const PORT = process.env.PORT || 4000;
 
