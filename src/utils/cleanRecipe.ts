@@ -8,15 +8,22 @@ const cleanRecipe = (recipe: originalRecipeType) => {
     aisle: item.aisle,
     name: item.name,
     amount: item.amount,
-    unit: item.unit ?? "unit(s)",
+    unit: item.unit && item.unit.trim() ? item.unit : "unit(s)",
     measures: {
       us: {
         amount: item.measures.us.amount,
-        unit: item.measures.us.unitShort ?? "unit(s)",
+        unit:
+          item.measures.us.unitShort && item.measures.us.unitShort.trim()
+            ? item.measures.us.unitShort
+            : "unit(s)",
       },
       metric: {
         amount: item.measures.metric.amount,
-        unit: item.measures.metric.unitShort ?? "unit(s)",
+        unit:
+          item.measures.metric.unitShort &&
+          item.measures.metric.unitShort.trim()
+            ? item.measures.metric.unitShort
+            : "unit(s)",
       },
     },
   }));

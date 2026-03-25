@@ -25,7 +25,7 @@ export const searchRecipe = async (req, res) => {
     // const userParams = `query=${query}&number=${amount}&apiKey=${process.env.SPOONACULAR_API_KEY}`;
     const { query } = req.body;
 
-    const existingQuery = await SearchQuery.findOne({ query });
+    const existingQuery = await SearchQuery.findOne({ queryTerm: query });
     if (!existingQuery) {
       const userParams = `query=${query}&apiKey=${process.env.SPOONACULAR_API_KEY}`;
       const spoonacularParams = `number=5&instructionsRequired=true&addRecipeInformation=true&addRecipeInstructions=true&fillIngredients=true`;
@@ -43,7 +43,9 @@ export const searchRecipe = async (req, res) => {
       storeQuery(query, cleanedData);
       return res.status(200).json(cleanedData);
     } else {
-      const existingRecipes = await SearchResult.find({ queryTerm: query });
+      const existingRecipes = await SearchResult.find({
+        queryTerm: existingQuery._id,
+      });
       return res.status(200).json(existingRecipes);
     }
   } catch (error) {
