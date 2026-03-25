@@ -22,11 +22,6 @@ const SearchResultSchema = new Schema(
       analyzedInstructions: { type: [InstructionSchema], required: true },
       language: { type: String, required: true },
       spoonacularSourceUrl: { type: String, required: true },
-      author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: false,
-      },
     },
     queryTerm: { type: Schema.Types.ObjectId, ref: "SearchQuery" },
   },

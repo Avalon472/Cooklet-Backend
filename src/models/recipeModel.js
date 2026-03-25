@@ -12,7 +12,7 @@ export const TagsSchema = new Schema({
 
 export const IngredientSchema = new Schema({
   id: { type: Number, required: true },
-  aisle: { type: String, required: true },
+  aisle: { type: String, required: false },
   name: { type: String, required: true },
   amount: { type: Number, required: true },
   unit: { type: String, required: true },
@@ -35,28 +35,23 @@ export const InstructionSchema = new Schema({
   number: { type: Number, required: true },
   step: { type: String, required: true },
   ingredients: [{ type: String, required: true }],
-  equipment: [{ type: String, required: true }],
+  equipment: [{ type: String, required: false }],
 });
 
 //Main schema
 const RecipeSchema = new Schema(
   {
-    id: { type: Number, required: true, unique: true },
+    id: { type: Number, required: false, unique: true },
     image: { type: String, required: true },
     title: { type: String, required: true },
-    readyInMinutes: { type: Number, required: true },
-    servings: { type: Number, required: true },
+    readyInMinutes: { type: Number, required: false },
+    servings: { type: Number, required: false },
     sourceURL: { type: String, required: true },
-    recipeTags: { type: TagsSchema, required: true },
-    creditsText: { type: String, required: true },
-    license: { type: String, required: true },
-    sourceName: { type: String, required: true },
-    pricePerServing: { type: Number, required: true },
-    extendedIngredients: { type: [IngredientSchema], required: true },
+    recipeTags: { type: TagsSchema, required: false },
+    pricePerServing: { type: Number, required: false },
+    ingredients: { type: [IngredientSchema], required: true },
     summary: { type: String, required: true },
-    analyzedInstructions: { type: [InstructionSchema], required: true },
-    language: { type: String, required: true },
-    spoonacularSourceUrl: { type: String, required: true },
+    instructions: { type: [InstructionSchema], required: true },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

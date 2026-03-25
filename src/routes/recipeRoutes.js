@@ -1,14 +1,18 @@
 import express from "express";
-import { searchRecipe } from "../controllers/recipeControllers";
-
-//fetchAllRecipes - get
-//createRecipe - post
-//searchRecipe - post
-//editRecipe - post (maybe patch)
-//deleteRecipe - delete
+import {
+  createRecipe,
+  deleteRecipe,
+  getAllRecipes,
+  searchRecipe,
+} from "../controllers/recipeControllers";
 
 const router = express.Router();
 
 router.get("/search", searchRecipe);
+router.get("/all", getAllRecipes);
+router.post("/create", createRecipe);
+router.delete("/:id", deleteRecipe);
+// router.patch(":/id", editRecipe)
+// router.get("/searchMore", searchAdditionalRecipes)
 
 export default router;

@@ -1,9 +1,6 @@
-//fetchAllRecipes
-//createRecipe
-//searchRecipe
 //editRecipe
-//deleteRecipe
 
+import Recipe from "../models/recipeModel";
 import SearchResult from "../models/searchResultModel";
 import SearchQuery from "../models/searchTermModel";
 import cleanRecipe from "../utils/cleanRecipe";
@@ -50,6 +47,95 @@ export const searchRecipe = async (req, res) => {
     }
   } catch (error) {
     console.log("Error in the recipe search method", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getAllRecipes = async (req, res) => {
+  try {
+    const recipes = await Recipe.find().sort({ createdAt: -1 });
+
+    if (recipes.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    res.status(200).json(recipes);
+  } catch (error) {
+    console.log("Error in the get all recipes method", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const createRecipe = async (req, res) => {
+  try {
+    const {
+      image,
+      title,
+      readyInMinutes,
+      servings,
+      sourceURL,
+      recipeTags,
+      pricePerServing,
+      ingredients,
+      summary,
+      instructions,
+    } = req.body;
+    //if user gets added later, search for it here
+    //and validate that one was found
+
+    //same for if we allow custom image uploads, cloudinary
+    //upload will go here
+
+    //Validate that required fields were submitted
+    if (
+      !image ||
+      !title ||
+      !sourceURL ||
+      !ingredients ||
+      !summary ||
+      !instructions
+    ) {
+      return res.status(400).json({
+        error: "Missing required fields",
+        image: image || "n/a",
+        title: title || "n/a",
+        sourceURL: sourceURL || "n/a",
+        summary: summary || "n/a",
+        instructions: instructions || "n/a",
+      });
+    }
+
+    //Sanitize optional fields
+    const newRecipe = new Recipe({
+      image,
+      title,
+      readyInMinutes: readyInMinutes ?? null,
+      servings: servings ?? null,
+      sourceURL,
+      recipeTags: recipeTags ?? null,
+      pricePerServing: pricePerServing ?? null,
+      ingredients: Array.isArray(ingredients) ? ingredients : [],
+      summary,
+      instructions: Array.isArray(instructions) ? instructions : [],
+    });
+
+    await newRecipe.save();
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    console.log("Error in the create recipe method", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const deleteRecipe = async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
+
+    await Recipe.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Recipe deleted successfully" });
+  } catch (error) {
+    console.log("Error in the delete recipe method", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
