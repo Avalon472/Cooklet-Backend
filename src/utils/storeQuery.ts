@@ -2,7 +2,6 @@ import { recipeInfo } from "../data";
 import SearchResult from "../models/searchResultModel";
 import SearchQuery from "../models/searchTermModel";
 
-//TODO: Add safe accessing of ingredients, check how recipe cleaning handles empty units
 export const storeQuery = async (query: String, results: recipeInfo[]) => {
   //Save the query
   const search = new SearchQuery({ queryTerm: query });

@@ -39,7 +39,6 @@ app.get("/search", async (req, res) => {
     if (!data) {
       res.status(404).json({ error: "Unable to query recipes" });
     }
-    // console.log(data);
     return res.status(200).json(data);
   } catch (error) {
     console.error(error);
@@ -49,9 +48,9 @@ app.get("/search", async (req, res) => {
 
 app.use("/api/recipe", recipeRoutes);
 
-const PORT = process.env.PORT || 4000;
+const PORT = Number(process.env.PORT) || 4000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
   connectMongoDB();
 });

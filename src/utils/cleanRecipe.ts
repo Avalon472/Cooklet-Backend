@@ -51,14 +51,14 @@ const cleanRecipe = (recipe: originalRecipeType) => {
       cheap: recipe.cheap,
     },
     creditsText: recipe.creditsText,
-    license: recipe.license,
-    sourceName: recipe.sourceName,
+    license: recipe.license || "none",
+    sourceName: recipe.sourceName || "none",
     pricePerServing: recipe.pricePerServing * 0.011, //Price is in INR, needs to be converted to USD
     extendedIngredients: ingredients,
     summary: recipe.summary,
     analyzedInstructions: instructions,
-    language: recipe.language,
-    spoonacularSourceUrl: recipe.spoonacularSourceUrl,
+    language: recipe.language || "eng",
+    spoonacularSourceUrl: recipe.spoonacularSourceUrl || "none",
   };
   return cleanedRecipe;
 };

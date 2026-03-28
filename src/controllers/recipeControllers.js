@@ -4,6 +4,7 @@ import Recipe from "../models/recipeModel";
 import SearchResult from "../models/searchResultModel";
 import SearchQuery from "../models/searchTermModel";
 import cleanRecipe from "../utils/cleanRecipe";
+import { extractUserRecipe } from "../utils/extractUserRecipe";
 import { storeQuery } from "../utils/storeQuery";
 
 export const searchRecipe = async (req, res) => {
@@ -20,7 +21,7 @@ export const searchRecipe = async (req, res) => {
 
     // const { query, amount } = req.body;
     // const userParams = `query=${query}&number=${amount}&apiKey=${process.env.SPOONACULAR_API_KEY}`;
-    const { query } = req.body;
+    const { query } = req.query;
 
     const existingQuery = await SearchQuery.findOne({ queryTerm: query });
     if (!existingQuery) {
@@ -29,7 +30,7 @@ export const searchRecipe = async (req, res) => {
       const url = `https://api.spoonacular.com/recipes/complexSearch?${userParams}&${spoonacularParams}`;
       const response = await fetch(url);
       const data = await response.json();
-      if (!data) {
+      if (!data || !data.results) {
         return res.status(401).json({
           error: "Unable to contact Spoonacular api. Please try again.",
         });
@@ -38,12 +39,17 @@ export const searchRecipe = async (req, res) => {
       //array and ignore the offset and number attributes to get expected data format
       const cleanedData = data.results.map((recipe) => cleanRecipe(recipe));
       storeQuery(query, cleanedData);
-      return res.status(200).json(cleanedData);
+      const recipeData = cleanedData.map((recipe) => extractUserRecipe(recipe))
+      return res.status(200).json(recipeData);
     } else {
       const existingRecipes = await SearchResult.find({
         queryTerm: existingQuery._id,
       });
-      return res.status(200).json(existingRecipes);
+      const recipeData = existingRecipes.map((searchResult) => extractUserRecipe(searchResult.recipe))
+      console.log(recipeData)
+      console.log(recipeData[0].extendedIngredients[0])
+      console.log(recipeData[0].analyzedInstructions[0])
+      return res.status(200).json(recipeData);
     }
   } catch (error) {
     console.log("Error in the recipe search method", error);

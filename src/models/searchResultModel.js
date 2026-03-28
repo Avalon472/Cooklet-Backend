@@ -6,7 +6,7 @@ import { IngredientSchema, InstructionSchema, TagsSchema } from "./recipeModel";
 const SearchResultSchema = new Schema(
   {
     recipe: {
-      id: { type: Number, required: true, unique: true },
+      id: { type: Number, required: true},
       image: { type: String, required: true },
       title: { type: String, required: true },
       readyInMinutes: { type: Number, required: true },
