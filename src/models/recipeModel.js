@@ -49,9 +49,9 @@ const RecipeSchema = new Schema(
     sourceURL: { type: String, required: true },
     recipeTags: { type: TagsSchema, required: false },
     pricePerServing: { type: Number, required: false },
-    ingredients: { type: [IngredientSchema], required: true },
+    extendedIngredients: { type: [IngredientSchema], required: true },
     summary: { type: String, required: true },
-    instructions: { type: [InstructionSchema], required: true },
+    analyzedInstructions: { type: [InstructionSchema], required: true },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
