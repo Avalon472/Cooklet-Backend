@@ -82,9 +82,9 @@ export const createRecipe = async (req, res) => {
       sourceURL,
       recipeTags,
       pricePerServing,
-      ingredients,
+      extendedIngredients,
       summary,
-      instructions,
+      analyzedInstructions,
     } = req.body;
     //if user gets added later, search for it here
     //and validate that one was found
@@ -97,9 +97,9 @@ export const createRecipe = async (req, res) => {
       !image ||
       !title ||
       !sourceURL ||
-      !ingredients ||
+      !extendedIngredients ||
       !summary ||
-      !instructions
+      !analyzedInstructions
     ) {
       return res.status(400).json({
         error: "Missing required fields",
@@ -107,7 +107,8 @@ export const createRecipe = async (req, res) => {
         title: title || "n/a",
         sourceURL: sourceURL || "n/a",
         summary: summary || "n/a",
-        instructions: instructions || "n/a",
+        instructions: analyzedInstructions || "n/a",
+        ingredients: extendedIngredients || "n/a"
       });
     }
 
@@ -120,9 +121,9 @@ export const createRecipe = async (req, res) => {
       sourceURL,
       recipeTags: recipeTags ?? null,
       pricePerServing: pricePerServing ?? null,
-      ingredients: Array.isArray(ingredients) ? ingredients : [],
+      extendedIngredients: Array.isArray(extendedIngredients) ? extendedIngredients : [],
       summary,
-      instructions: Array.isArray(instructions) ? instructions : [],
+      analyzedInstructions: Array.isArray(analyzedInstructions) ? analyzedInstructions : [],
     });
 
     await newRecipe.save();

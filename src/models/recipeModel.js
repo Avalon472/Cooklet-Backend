@@ -41,7 +41,6 @@ export const InstructionSchema = new Schema({
 //Main schema
 const RecipeSchema = new Schema(
   {
-    id: { type: Number, required: false, unique: true },
     image: { type: String, required: true },
     title: { type: String, required: true },
     readyInMinutes: { type: Number, required: false },
