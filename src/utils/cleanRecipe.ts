@@ -28,12 +28,17 @@ const cleanRecipe = (recipe: originalRecipeType) => {
     },
   }));
 
-  const instructions = recipe.analyzedInstructions[0].steps.map((step) => ({
+  const instructions = recipe.analyzedInstructions?.[0]?.steps ? recipe.analyzedInstructions[0].steps.map((step) => ({
     number: step.number,
     step: step.step,
     ingredients: step.ingredients.map((i) => i.name),
     equipment: step.equipment.map((e) => e.name),
-  }));
+  })): [{
+    number:0,
+    step: "No steps found for this recipe",
+    ingredients: ["None"],
+    equipment: ["None"]
+  }];
 
   const cleanedRecipe: recipeInfo = {
     id: recipe.id,
