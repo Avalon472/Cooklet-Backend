@@ -2,6 +2,7 @@ import express from "express";
 import {
   createRecipe,
   deleteRecipe,
+  editRecipe,
   getAllRecipes,
   searchRecipe,
 } from "../controllers/recipeControllers";
@@ -12,7 +13,7 @@ router.get("/search", searchRecipe);
 router.get("/all", getAllRecipes);
 router.post("/create", createRecipe);
 router.delete("/:id", deleteRecipe);
-// router.patch(":/id", editRecipe)
+router.put("/:id", editRecipe)
 // router.get("/searchMore", searchAdditionalRecipes)
 
 export default router;

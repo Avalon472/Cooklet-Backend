@@ -146,3 +146,55 @@ export const deleteRecipe = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const editRecipe = async (req, res) => {
+  try {
+
+    const {
+      image,
+      title,
+      readyInMinutes,
+      servings,
+      sourceURL,
+      recipeTags,
+      pricePerServing,
+      extendedIngredients,
+      summary,
+      analyzedInstructions,
+    } = req.body;
+
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
+
+    //Only updates fields that came in from the request body
+    if (image !== undefined) recipe.image = image;
+    if (title !== undefined) recipe.title = title;
+    if (readyInMinutes !== undefined) recipe.readyInMinutes = readyInMinutes;
+    if (servings !== undefined) recipe.servings = servings;
+    if (sourceURL !== undefined) recipe.sourceURL = sourceURL;
+    if (recipeTags !== undefined) recipe.recipeTags = recipeTags;
+    if (pricePerServing !== undefined) recipe.pricePerServing = pricePerServing;
+    if (summary !== undefined) recipe.summary = summary;
+
+    if (extendedIngredients !== undefined) {
+      recipe.extendedIngredients = Array.isArray(extendedIngredients)
+        ? extendedIngredients
+        : [];
+    }
+
+    if (analyzedInstructions !== undefined) {
+      recipe.analyzedInstructions = Array.isArray(analyzedInstructions)
+        ? analyzedInstructions
+        : [];
+    }
+
+    await recipe.save();
+
+    res.status(200).json(recipe);
+
+
+  } catch (error) {
+        console.log("Error in the update recipe method", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
