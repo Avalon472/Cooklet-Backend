@@ -19,9 +19,9 @@ export const searchRecipe = async (req, res) => {
     //update term in database to include the results
     //return results
 
-    // const { query, amount } = req.body;
-    // const userParams = `query=${query}&number=${amount}&apiKey=${process.env.SPOONACULAR_API_KEY}`;
     const { query } = req.query;
+
+    if(!query) return res.status(404).json({error: "Please include a search term"})
 
     const existingQuery = await SearchQuery.findOne({ queryTerm: query });
     if (!existingQuery) {
@@ -46,9 +46,6 @@ export const searchRecipe = async (req, res) => {
         queryTerm: existingQuery._id,
       });
       const recipeData = existingRecipes.map((searchResult) => extractUserRecipe(searchResult.recipe))
-      console.log(recipeData)
-      console.log(recipeData[0].extendedIngredients[0])
-      console.log(recipeData[0].analyzedInstructions[0])
       return res.status(200).json(recipeData);
     }
   } catch (error) {
