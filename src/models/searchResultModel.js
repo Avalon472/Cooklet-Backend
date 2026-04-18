@@ -22,6 +22,7 @@ const SearchResultSchema = new Schema(
       analyzedInstructions: { type: [InstructionSchema], required: true },
       language: { type: String, required: true },
       spoonacularSourceUrl: { type: String, required: true },
+      createdAt: { type: Date, expires: '7d', default: Date.now}
     },
     queryTerm: { type: Schema.Types.ObjectId, ref: "SearchQuery" },
   },
